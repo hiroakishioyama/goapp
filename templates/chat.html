@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <style>
+        #messages { height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 8px; }
+    </style>
+</head>
+<body>
+<h1>Chat Room</h1>
+<div id="messages"></div>
+<textarea id="message" placeholder="Enter message..."></textarea>
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    var ws = new WebSocket("ws://" + window.location.host + "/ws");
+    ws.onopen = function() {
+        console.log('WebSocket connection established');
+    };
+
+    ws.onmessage = function(event) {
+        var messages = document.getElementById('messages');
+        var message = document.createElement('div');
+        message.textContent = event.data;
+        messages.appendChild(message);
+    };
+
+    ws.onerror = function(error) {
+        console.error('WebSocket Error: ' + error);
+    };
+
+    function sendMessage() {
+        var messageInput = document.getElementById('message');
+        if (messageInput.value) {
+            ws.send(messageInput.value);
+            messageInput.value = ''; // clear the input field
+        }
+    }
+
+    // Optionally, handle the WebSocket close event
+    ws.onclose = function(event) {
+        console.log('WebSocket connection closed', event);
+    };
+</script>
+</body>
+</html>
