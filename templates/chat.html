@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chat Room</title>
+    <title>チャットルーム</title>
     <style>
         #messages { height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 8px; }
     </style>
 </head>
 <body>
-<h1>Chat Room</h1>
+<h1>チャットルーム</h1>
 <div id="messages"></div>
 <textarea id="message" placeholder="Enter message..."></textarea>
-<button onclick="sendMessage()">Send</button>
+<button onclick="sendMessage()">送信</button>
 
 <script>
     var ws = new WebSocket("ws://" + window.location.host + "/ws");
@@ -33,11 +33,10 @@
         var messageInput = document.getElementById('message');
         if (messageInput.value) {
             ws.send(messageInput.value);
-            messageInput.value = ''; // clear the input field
+            messageInput.value = '';
         }
     }
 
-    // Optionally, handle the WebSocket close event
     ws.onclose = function(event) {
         console.log('WebSocket connection closed', event);
     };
